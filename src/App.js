@@ -12,6 +12,7 @@ import WatchLater from './components/WatchLater'
 import YouTubePlayer from './components/YoutubePlayer'
 import './app.scss'
 
+// The whole App.js file should be renamed to App.jsx, as it's a React component containing JSX
 const App = () => {
 
 // Here we're getting the entire state from the store, which is unnecessary in this case and can cause performance issues/unnecessary rerenders. 

@@ -6,17 +6,21 @@ import '../styles/starred.scss'
 
 const WatchLater = ({viewTrailer}) => {
 
+    // accessing the entire state from the store. We should select only the watchLaterMovies from the state.watchLater.
     const state = useSelector((state) => state)
     const { watchLater } = state
+    // fix the typo here, we should rename it to removeAllWatchLater
     const { remveAllWatchLater } = watchLaterSlice.actions
     const dispatch = useDispatch()
 
   return (
     <div className="starred" data-testid="watch-later-div">
+      {/* formatting could be better and more readable */}
       {watchLater.watchLaterMovies.length > 0 && (<div data-testid="watch-later-movies" className="starred-movies">
         <h6 className="header">Watch Later List</h6>
         <div className="row">
         {watchLater.watchLaterMovies.map((movie) => (
+        // no closeCard prop. It's required in Movie.jsx
           <Movie 
             movie={movie} 
             key={movie.id}
