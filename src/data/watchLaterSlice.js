@@ -13,6 +13,7 @@ const watchLaterSlice = createSlice({
             const indexOfId = state.watchLaterMovies.findIndex(key => key.id === action.payload.id)
             state.watchLaterMovies.splice(indexOfId, 1)
         },
+        // it's a typo here, we should rename it to removeAllWatchLater
         remveAllWatchLater: (state) => {
             state.watchLaterMovies = []
         },
