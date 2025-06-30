@@ -5,36 +5,66 @@ import Movie from './Movie'
 import '../styles/starred.scss'
 
 const WatchLater = ({viewTrailer}) => {
+  // Efficient state selection - only select what we need
+  const watchLaterMovies = useSelector((state) => state.watchLater.watchLaterMovies)
+  const { removeAllWatchLater } = watchLaterSlice.actions
+  const dispatch = useDispatch()
 
-    const state = useSelector((state) => state)
-    const { watchLater } = state
-    const { remveAllWatchLater } = watchLaterSlice.actions
-    const dispatch = useDispatch()
+  const handleClearAll = () => {
+    if (window.confirm('Are you sure you want to empty your watch later list?')) {
+      dispatch(removeAllWatchLater())
+    }
+  }
 
-  return (
-    <div className="starred" data-testid="watch-later-div">
-      {watchLater.watchLaterMovies.length > 0 && (<div data-testid="watch-later-movies" className="starred-movies">
-        <h6 className="header">Watch Later List</h6>
-        <div className="row">
-        {watchLater.watchLaterMovies.map((movie) => (
-          <Movie 
-            movie={movie} 
-            key={movie.id}
-            viewTrailer={viewTrailer}
-          />
-        ))}
+  if (watchLaterMovies.length === 0) {
+    return (
+      <div className="watch-later" data-testid="watch-later-div">
+        <div className="text-center empty-state">
+          <i className="bi bi-clock" />
+          <h3>Your watch later list is empty</h3>
+          <p>Movies you want to watch later will appear here</p>
+          <Link to="/" className="btn btn-primary">
+            Browse Movies
+          </Link>
         </div>
-
-        <footer className="text-center">
-          <button className="btn btn-primary" onClick={() => dispatch(remveAllWatchLater())}>Empty list</button>
-        </footer>
-      </div>)}
+      </div>
+    )
+  }
 
       {watchLater.watchLaterMovies.length === 0 && (<div className="text-center empty-cart">
         <i className="bi bi-heart" />
         <p>You have no movies saved to watch later.</p>
         <p>Go to <Link to='/'>Home</Link></p>
       </div>)}
+  return (
+    <div className="watch-later" data-testid="watch-later-div">
+      <div data-testid="watch-later-movies" className="watch-later-movies">
+        <header className="section-header">
+          <h2>Watch Later</h2>
+          <span className="movie-count">{watchLaterMovies.length} movies</span>
+        </header>
+        
+        <div className="movies-grid">
+          {watchLaterMovies.map((movie) => (
+            <Movie 
+              movie={movie} 
+              key={movie.id}
+              viewTrailer={viewTrailer}
+            />
+          ))}
+        </div>
+
+        <footer className="section-footer text-center">
+          <button 
+            className="btn btn-warning" 
+            onClick={handleClearAll}
+            aria-label="Empty watch later list"
+            data-testid="clear-watch-later-button"
+          >
+            Empty List
+          </button>
+        </footer>
+      </div>
     </div>
   )
 }
