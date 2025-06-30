@@ -20,6 +20,16 @@ header {
       display: flex;
       align-items: center;
       
+      a {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        
+        &:hover {
+          text-decoration: none;
+        }
+      }
+      
       i.bi-film {
         font-size: 1.3rem;
         color: $gray-lighter;
