@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 
 import '../styles/header.scss'
 
+// no need to pass searchMovies as a prop. We can use the useNavigate hook to navigate to the home page and redux stuff we can also use from here.
 const Header = ({ searchMovies }) => {
   
   const { starredMovies } = useSelector((state) => state.starred)

@@ -16,9 +16,7 @@ const Starred = ({viewTrailer}) => {
     const dispatch = useDispatch()
 
   return (
-    <div className="starred" data-testid="starred">u
-      {/* formatting could be better for the readability*/}
-
+    <div className="starred" data-testid="starred">
       {/* We can combine these two conditional renders into one and use the ternary operator*/}
       {starred.starredMovies.length > 0 && (<div data-testid="starred-movies" className="starred-movies">
         <h6 className="header">Starred movies</h6>
@@ -35,8 +33,7 @@ const Starred = ({viewTrailer}) => {
         </div>
 
         <footer className="text-center">
-        // we can have aria-label for the button, to make it more accessible or data-testid for testing
-
+        {/* we can have aria-label for the button, to make it more accessible or data-testid for testing */}
           <button className="btn btn-primary" onClick={() => dispatch(clearAllStarred())}>Remove all starred</button>
         </footer>
       </div>)}
