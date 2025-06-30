@@ -24,6 +24,15 @@ header {
         color: $gray-lighter;
         margin-right: $spacing-sm;
       }
+
+      .logo-text {
+        color: white;
+        font-size: 1.4rem;
+        font-weight: bold;
+        margin-left: $spacing-sm;
+        text-decoration: none;
+        letter-spacing: 1px;
+      }
     }
 
     .header-right {

@@ -34,6 +34,7 @@ const Header = ({ searchMovies }) => {
       <div className="logo">
         <Link to="/" data-testid="home" onClick={handleClearSearch}>
           <i className="bi bi-film" />
+          <span className="logo-text">MOVIELAND</span>
         </Link>
       </div>
 

@@ -19,6 +19,7 @@ const Movies = ({ movies, loading, hasMore, viewTrailer }) => {
 
   return (
     <div>
+      <h1 className="section-title">POPULAR MOVIES</h1>
       <div data-testid="movies" className="movies-grid">
         {movies.map((movie) => (
           <Movie 
