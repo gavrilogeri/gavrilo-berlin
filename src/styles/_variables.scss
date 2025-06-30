@@ -1,0 +1,88 @@
+// app colors colors: -----
+
+// Primary Colors
+$primary-blue: #1CB5E0;
+$primary-blue-dark: #0ea5e9;
+$primary-blue-light: #1cb5e033;
+
+// Neutral Colors
+$white: #fff;
+$black: #000;
+$gray-dark: #333;
+$gray-medium: #666;
+$gray-light: #ccc;
+$gray-lighter: #e9ecef;
+$gray-darkest: #111111;
+
+// Background Colors
+$bg-header: #000851e6;
+$bg-section: #0f1419e6;
+$bg-section-alt: #0f1419cc;
+$bg-gradient-start: #667eea;
+$bg-gradient-end: #764ba2;
+$bg-main-gradient: linear-gradient(0deg, $primary-blue 20%, #050b45 100%);
+
+// Warning/Orange Colors
+$warning-orange: #ffa726;
+$warning-orange-dark: #ff9800;
+
+// Text Colors
+$text-primary: $white;
+$text-secondary: $gray-light;
+$text-dark: $gray-dark;
+$text-link: $primary-blue;
+
+// Border Colors
+$border-light: $gray-light;
+$border-primary: $primary-blue;
+
+// Shadow Colors
+$shadow-primary: #1cb5e033;
+$shadow-dark: #0000001a;
+
+// State Colors
+$color-error: $primary-blue; // Using blue instead of red for consistency
+$color-success: $primary-blue;
+
+// SPacing and sizing variables: ------
+
+// Common spacing values
+$spacing-xs: 5px;
+$spacing-sm: 10px;
+$spacing-md: 15px;
+$spacing-lg: 20px;
+$spacing-xl: 30px;
+
+// Border radius
+$border-radius-sm: 3px;
+$border-radius-md: 5px;
+$border-radius-lg: 8px;
+$border-radius-xl: 20px;
+$border-radius-full: 50%;
+
+// z-indexs 
+$z-header: 999;
+$z-modal: 1000;
+$z-modal-high: 1001;
+
+// responsive design border values: -----
+
+$breakpoint-mobile: 480px;
+$breakpoint-tablet: 768px;
+$breakpoint-desktop: 1200px;
+
+// Grid values: -----
+
+$grid-gap-mobile: 15px;
+$grid-gap-tablet: 18px;
+$grid-gap-desktop: 20px;
+$grid-gap-large: 25px;
+
+$grid-min-width-mobile: 140px;
+$grid-max-width-mobile: 200px;
+$grid-min-width-tablet: 180px;
+$grid-max-width-tablet: 250px;
+$grid-min-width-desktop: 180px;
+$grid-max-width-desktop: 250px;
+$grid-min-width-large: 200px;
+$grid-max-width-large: 280px; 

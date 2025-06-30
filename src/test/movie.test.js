@@ -1,7 +1,7 @@
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { renderWithProviders } from './utils'
-import App from '../App'
+import App from '../App.jsx'
 
 it('movies starred and saved to watch later', async () => {
     renderWithProviders(<App />)
@@ -32,4 +32,7 @@ it('movies starred and saved to watch later', async () => {
     })
 
     await userEvent.click(screen.getAllByTestId('remove-watch-later')[0])
+    await waitFor(() => {
+      expect(screen.getByTestId('watch-later')).toBeInTheDocument()
+    })
 })
