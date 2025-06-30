@@ -1,10 +1,10 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { Routes, Route, createSearchParams, useSearchParams, useNavigate } from "react-router-dom";
 import 'reactjs-popup/dist/index.css';
 
 import { ENDPOINT, API_KEY } from './constants';
-import { useMovieSearch } from './hooks/useMovieSearch';
 import { useModal } from './hooks/useModal';
+import useInfiniteScroll from './hooks/useInfiniteScroll';
 import ErrorBoundary from './components/common/ErrorBoundary';
 import { LoadingSpinner } from './components/common/LoadingSpinner';
 import Header from './components/Header';
@@ -16,12 +16,11 @@ import './app.scss';
 
 const App = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const searchQuery = searchParams.get('search');
+  const searchQuery = searchParams.get('search') || '';
   const navigate = useNavigate();
   
-  const { movies, isLoading, isError, getMovies, searchMovies: searchMoviesHook } = useMovieSearch();
+  const { movies, loading, hasMore } = useInfiniteScroll(searchQuery);
   const { isOpen: isModalOpen, modalData: videoKey, openModal, closeModal } = useModal();
-  
   const [isLoadingTrailer, setIsLoadingTrailer] = useState(false);
 
   const searchMovies = useCallback((query) => {
@@ -29,12 +28,10 @@ const App = () => {
     
     if (query?.trim()) {
       setSearchParams(createSearchParams({ search: query.trim() }));
-      searchMoviesHook(query.trim());
     } else {
       setSearchParams();
-      getMovies();
     }
-  }, [navigate, setSearchParams, searchMoviesHook, getMovies]);
+  }, [navigate, setSearchParams]);
 
   const getTrailerKey = useCallback(async (movieId) => {
     const controller = new AbortController();
@@ -82,34 +79,7 @@ const App = () => {
     }
   }, [openModal, closeModal, getTrailerKey]);
 
-  // Initialize movies on component mount and when search query changes
-  useEffect(() => {
-    if (searchQuery?.trim()) {
-      searchMoviesHook(searchQuery);
-    } else {
-      getMovies();
-    }
-  }, [searchQuery, searchMoviesHook, getMovies]);
 
-  if (isError) {
-    return (
-      <div className="App">
-        <Header searchMovies={searchMovies} />
-        <div className="container">
-          <div className="error-state">
-            <h2>Oops! Something went wrong</h2>
-            <p>Failed to load movies. Please try again later.</p>
-            <button 
-              onClick={() => window.location.reload()} 
-              className="retry-button"
-            >
-              Retry
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <ErrorBoundary>
@@ -131,9 +101,11 @@ const App = () => {
             <Route 
               path="/" 
               element={
-                <Movies 
-                  viewTrailer={viewTrailer} 
-                  isLoading={isLoading}
+                <Movies
+                  movies={movies}
+                  loading={loading}
+                  hasMore={hasMore}
+                  viewTrailer={viewTrailer}
                 />
               } 
             />

@@ -1,27 +1,14 @@
-import { useSelector } from 'react-redux';
+import React from 'react';
 import Movie from './Movie';
 import { LoadingSpinner } from './common/LoadingSpinner';
 import '../styles/movies.scss';
 
-const Movies = ({ viewTrailer, isLoading }) => {
-  const { movies, fetchStatus } = useSelector((state) => state.movies);
-  const moviesList = movies?.results || [];
-  
-  if (isLoading || fetchStatus === 'loading') {
+const Movies = ({ movies, loading, hasMore, viewTrailer }) => {
+  if (loading && movies.length === 0) {
     return <LoadingSpinner message="Loading movies..." />;
   }
 
-export default Movies
-  if (fetchStatus === 'error') {
-    return (
-      <div className="error-state">
-        <h3>Failed to load movies</h3>
-        <p>Please try again later.</p>
-      </div>
-    );
-  }
-
-  if (moviesList.length === 0) {
+  if (movies.length === 0) {
     return (
       <div className="no-movies">
         <h3>No movies found</h3>
@@ -31,14 +18,28 @@ export default Movies
   }
 
   return (
-    <div data-testid="movies" className="movies-grid">
-      {moviesList.map((movie) => (
-        <Movie 
-          movie={movie} 
-          key={movie.id}
-          viewTrailer={viewTrailer}
-        />
-      ))}
+    <div>
+      <div data-testid="movies" className="movies-grid">
+        {movies.map((movie) => (
+          <Movie 
+            movie={movie} 
+            key={movie.id}
+            viewTrailer={viewTrailer}
+          />
+        ))}
+      </div>
+      
+      {loading && (
+        <div style={{ padding: '20px', textAlign: 'center' }}>
+          <LoadingSpinner message="Loading more movies..." />
+        </div>
+      )}
+      
+      {!hasMore && movies.length > 0 && (
+        <div style={{ padding: '20px', textAlign: 'center', color: '#ccc' }}>
+          <p>You've reached the end of the list!</p>
+        </div>
+      )}
     </div>
   );
 };

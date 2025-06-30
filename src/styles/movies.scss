@@ -1,3 +1,235 @@
+// Grid layout for movies
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 300px));
+  gap: 25px;
+  padding: 30px;
+  padding-top: 80px; // Add space below fixed header
+  max-width: 1400px;
+  margin: 0 auto;
+  justify-content: center;
+  width: 100%;
+
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 280px));
+    gap: 20px;
+    padding: 25px;
+    padding-top: 70px;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 250px));
+    gap: 18px;
+    padding: 20px;
+    padding-top: 70px;
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 200px));
+    gap: 15px;
+    padding: 15px;
+    padding-top: 70px;
+  }
+}
+
+// Empty state styling
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #fff;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  i {
+    font-size: 3rem;
+    color: #1CB5E0;
+    margin-bottom: 15px;
+  }
+
+  h3 {
+    color: #1CB5E0;
+    margin-bottom: 10px;
+  }
+
+  p {
+    color: #ccc;
+    margin-bottom: 20px;
+  }
+}
+
+// Custom button styles
+.btn-primary {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #1CB5E0;
+  color: #fff !important;
+  text-decoration: none;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #0ea5e9;
+    color: #fff !important;
+    text-decoration: none;
+  }
+}
+
+.btn-warning {
+  padding: 10px 20px;
+  background-color: #ffa726;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #ff9800;
+  }
+}
+
+.btn-watch-later {
+  display: block;
+  width: 90%;
+  height: 26px;
+  margin: 8px auto;
+  font-size: 0.6rem;
+  text-align: center;
+  background-color: #fff;
+  color: #333;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &.active {
+    background-color: #1CB5E0;
+    color: #fff;
+    border-color: #1CB5E0;
+    
+    &:hover {
+      background-color: #0ea5e9;
+      border-color: #0ea5e9;
+    }
+  }
+
+  &:hover {
+    background-color: #1CB5E0;
+    color: #fff;
+    border-color: #1CB5E0;
+  }
+
+  @media (max-width: 720px) {
+    height: 20px;
+    padding: 2px 2px;
+    font-size: 0.6rem;
+  }
+
+  @media (max-width: 480px) {
+    margin: 15px auto;
+    height: 35px;
+    font-size: 1rem;
+  }
+}
+
+.btn-trailer {
+  display: block;
+  width: 90%;
+  height: 26px;
+  margin: 8px auto;
+  font-size: 0.6rem;
+  text-align: center;
+  background-color: #333;
+  color: #fff;
+  border: 1px solid #333;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #1CB5E0;
+    border-color: #1CB5E0;
+  }
+
+  @media (max-width: 720px) {
+    height: 20px;
+    padding: 2px 2px;
+    font-size: 0.6rem;
+  }
+
+  @media (max-width: 480px) {
+    margin: 15px auto;
+    height: 35px;
+    font-size: 1rem;
+  }
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
+  margin-bottom: 0;
+  color: #fff;
+  position: relative;
+  background-color: rgba(15, 20, 25, 0.9);
+  border-radius: 8px 8px 0 0;
+
+  h2 {
+    margin: 0;
+    color: #1CB5E0;
+    font-size: 1.8rem;
+  }
+
+  .movie-count {
+    color: #ccc;
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 768px) {
+    padding: 15px 20px;
+    
+    h2 {
+      font-size: 1.5rem;
+    }
+  }
+}
+
+.section-footer {
+  padding: 20px;
+  margin-top: 20px;
+  text-align: center;
+  background-color: rgba(15, 20, 25, 0.9);
+  border-radius: 0 0 8px 8px;
+}
+
+.error-state, .no-movies {
+  text-align: center;
+  padding: 60px 20px;
+  color: #fff;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  h3 {
+    color: #ff6b6b;
+    margin-bottom: 10px;
+  }
+
+  p {
+    color: #ccc;
+  }
+}
+
 .container {
     padding-top: 100px;
     color: #fff;
@@ -122,60 +354,35 @@
         }
     }
 
-    img {
-        width: 100%;
-        height: auto;
-    }
     .btn-star {
         width: 50px;
         margin: 0 5px;
-        color: #e50914;
+        color: #1CB5E0;
         cursor: pointer;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        transition: all 0.3s ease;
+
+        &:hover {
+            color: #0ea5e9;
+            transform: scale(1.1);
+        }
+
+        &.active {
+            color: #1CB5E0;
+            
+            &:hover {
+                color: #0ea5e9;
+                transform: scale(1.1);
+            }
+        }
+
         @media (max-width: 520px) {
             font-size: 25px;
         }        
     }
-    button {
-        display: block;
-        width: 90%;
-        height: 26px;
-        margin: 8px auto;
-        font-size: 0.6rem;
-        text-align: center;
-
-        @media (max-width: 720px) {
-            height: 20px;
-            padding: 2px 2px;
-            font-size: 0.6rem;
-        }
-
-        @media (max-width: 480px) {
-            margin: 15px auto;
-            height: 35px;
-            font-size: 1rem;            
-        }
-
-        &.btn-watch-later {
-        
-            &.blue {
-                color: #fff;
-                background-color: #1CB5E0;
-                border: #1CB5E0;
-            }
-
-            &:hover {
-                color: #fff;
-                background: #1CB5E0;
-                border-color: #1CB5E0;
-            }
-        }
-
-        &.btn-dark:hover {
-            color: #fff;
-            background: #1CB5E0;
-            border-color: #1CB5E0;
-        }
-    }
+    // Button styles moved to custom classes above
 }
 
 .card {
@@ -184,6 +391,30 @@
     text-align: center;
     background: transparent;
     border: none;
+    min-height: 400px;
+    
+    @media (max-width: 768px) {
+      min-height: 350px;
+    }
+
+    @media (max-width: 480px) {
+      min-height: 280px;
+    }
+
+    img {
+      width: 100%;
+      height: auto;
+      min-height: 300px;
+      object-fit: cover;
+      
+      @media (max-width: 768px) {
+        min-height: 250px;
+      }
+
+      @media (max-width: 480px) {
+        min-height: 200px;
+      }
+    }
 
     &.opened {
         & + .hero-card {
@@ -192,7 +423,7 @@
     }
 
     &:hover { 
-        transform: scale(1.1); 
+        transform: scale(1.05);
 
         .overlay {
             opacity: .8;
@@ -217,7 +448,6 @@
             }
         }
     }
- 
 
     h6.title {
         margin-top: 10px;
@@ -297,4 +527,47 @@
     @media (max-width: 720px) {
         background-color: transparent;
     }    
+}
+
+// Wrapper for starred and watch later pages
+.starred, .watch-later {
+  min-height: 100vh;
+  padding-bottom: 40px;
+
+  .starred-movies, .watch-later-movies {
+    background-color: #0f1419cc;
+    border-radius: 8px;
+    margin: 20px;
+    overflow: hidden;
+  }
+}
+
+// Button star styling
+.btn-star {
+  width: 50px;
+  margin: 0 5px;
+  color: #1CB5E0;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  transition: all 0.3s ease;
+
+  &:hover {
+    color: #0ea5e9;
+    transform: scale(1.1);
+  }
+
+  &.active {
+    color: #1CB5E0;
+    
+    &:hover {
+      color: #0ea5e9;
+      transform: scale(1.1);
+    }
+  }
+
+  @media (max-width: 520px) {
+    font-size: 25px;
+  }
 }

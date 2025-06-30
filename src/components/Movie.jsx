@@ -9,18 +9,24 @@ const Movie = ({ movie, viewTrailer }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const dispatch = useDispatch();
   
-  // Efficient selectors - only select what we need
-  const starredMovieIds = useSelector((state) => 
-    new Set(state.starred.starredMovies.map(m => m.id))
+  const starredMovies = useSelector((state) => state.starred.starredMovies);
+  const watchLaterMovies = useSelector((state) => state.watchLater.watchLaterMovies);
+  
+  // We'll memoize this to prevent unnecessary calculations
+  const isStarred = useMemo(() => 
+    starredMovies.some(m => m.id === movie.id), 
+    [starredMovies, movie.id]
   );
-  const watchLaterMovieIds = useSelector((state) => 
-    new Set(state.watchLater.watchLaterMovies.map(m => m.id))
+  
+  const isInWatchLater = useMemo(() => 
+    watchLaterMovies.some(m => m.id === movie.id), 
+    [watchLaterMovies, movie.id]
   );
 
   const { starMovie, unstarMovie } = starredSlice.actions;
   const { addToWatchLater, removeFromWatchLater } = watchLaterSlice.actions;
 
-  // Memoized movie data for actions
+//   Memoized movie data
   const movieData = useMemo(() => ({
     id: movie.id,
     overview: movie.overview,
@@ -29,9 +35,7 @@ const Movie = ({ movie, viewTrailer }) => {
     title: movie.title
   }), [movie]);
 
-  // Efficient lookups using Set
-  const isStarred = starredMovieIds.has(movie.id);
-  const isInWatchLater = watchLaterMovieIds.has(movie.id);
+
 
   const handleCardClick = useCallback(() => {
     setIsExpanded(true);
@@ -72,7 +76,7 @@ const Movie = ({ movie, viewTrailer }) => {
   const releaseYear = movie.release_date?.substring(0, 4);
 
   return (
-    <div className="wrapper col-3 col-sm-4 col-md-3 col-lg-3 col-xl-2">
+    <div className="wrapper">
       <div 
         className={`card ${isExpanded ? 'opened' : ''}`} 
         onClick={handleCardClick}
@@ -86,7 +90,7 @@ const Movie = ({ movie, viewTrailer }) => {
         }}
         aria-label={`View details for ${movie.title}`}
       >
-        <div className="card-body text-center">
+        <div className="card-body">
           <div className="overlay" />
           
           {isExpanded && (
@@ -117,7 +121,7 @@ const Movie = ({ movie, viewTrailer }) => {
 
                 <button 
                   type="button" 
-                  className={`btn btn-light btn-watch-later ${isInWatchLater ? 'blue' : ''}`}
+                  className={`btn-watch-later ${isInWatchLater ? 'active' : ''}`}
                   onClick={handleWatchLaterToggle}
                   data-testid={isInWatchLater ? "remove-watch-later" : "watch-later"}
                   aria-label={isInWatchLater ? "Remove from watch later" : "Add to watch later"}
@@ -131,7 +135,7 @@ const Movie = ({ movie, viewTrailer }) => {
 
                 <button 
                   type="button" 
-                  className="btn btn-dark" 
+                  className="btn-trailer" 
                   onClick={handleViewTrailer}
                   aria-label={`View trailer for ${movie.title}`}
                 >

@@ -5,7 +5,6 @@ import Movie from './Movie'
 import '../styles/starred.scss'
 
 const WatchLater = ({viewTrailer}) => {
-  // Efficient state selection - only select what we need
   const watchLaterMovies = useSelector((state) => state.watchLater.watchLaterMovies)
   const { removeAllWatchLater } = watchLaterSlice.actions
   const dispatch = useDispatch()
@@ -19,11 +18,11 @@ const WatchLater = ({viewTrailer}) => {
   if (watchLaterMovies.length === 0) {
     return (
       <div className="watch-later" data-testid="watch-later-div">
-        <div className="text-center empty-state">
+        <div className="empty-state">
           <i className="bi bi-clock" />
           <h3>Your watch later list is empty</h3>
           <p>Movies you want to watch later will appear here</p>
-          <Link to="/" className="btn btn-primary">
+          <Link to="/" className="btn-primary">
             Browse Movies
           </Link>
         </div>
@@ -31,11 +30,6 @@ const WatchLater = ({viewTrailer}) => {
     )
   }
 
-      {watchLater.watchLaterMovies.length === 0 && (<div className="text-center empty-cart">
-        <i className="bi bi-heart" />
-        <p>You have no movies saved to watch later.</p>
-        <p>Go to <Link to='/'>Home</Link></p>
-      </div>)}
   return (
     <div className="watch-later" data-testid="watch-later-div">
       <div data-testid="watch-later-movies" className="watch-later-movies">
@@ -54,9 +48,9 @@ const WatchLater = ({viewTrailer}) => {
           ))}
         </div>
 
-        <footer className="section-footer text-center">
+        <footer className="section-footer">
           <button 
-            className="btn btn-warning" 
+            className="btn-warning" 
             onClick={handleClearAll}
             aria-label="Empty watch later list"
             data-testid="clear-watch-later-button"
