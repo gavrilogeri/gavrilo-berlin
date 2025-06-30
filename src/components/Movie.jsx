@@ -3,8 +3,10 @@ import starredSlice from '../data/starredSlice'
 import watchLaterSlice from '../data/watchLaterSlice'
 import placeholder from '../assets/not-found-500X750.jpeg'
 
+// closeCard isn't used.  It should replace the Direct DOM manipulation from myClickHandler.
 const Movie = ({ movie, viewTrailer, closeCard }) => {
 
+    // again accessing the entire state from the store. We need to select only state.starred and state.watchLater
     const state = useSelector((state) => state)
     const { starred, watchLater } = state
     const { starMovie, unstarMovie } = starredSlice.actions
@@ -12,6 +14,7 @@ const Movie = ({ movie, viewTrailer, closeCard }) => {
 
     const dispatch = useDispatch()
 
+    // this is very anti-pattern. In React we usually don't manipulate DOM directly. This could've been handdled with React State and function such as closeCard. 
     const myClickHandler = (e) => {
         if (!e) var e = window.event
         e.cancelBubble = true
@@ -27,6 +30,7 @@ const Movie = ({ movie, viewTrailer, closeCard }) => {
                 <div className="info_panel">
                     <div className="overview">{movie.overview}</div>
                     <div className="year">{movie.release_date?.substring(0, 4)}</div>
+                    {/* this is not the most performat way to check if the movie is starred. We should use a new Set instead of an array. Consider memoization as well */}
                     {!starred.starredMovies.map(movie => movie.id).includes(movie.id) ? (
                         <span className="btn-star" data-testid="starred-link" onClick={() => 
                             dispatch(starMovie({
@@ -44,6 +48,8 @@ const Movie = ({ movie, viewTrailer, closeCard }) => {
                             <i className="bi bi-star-fill" data-testid="star-fill" />
                         </span>
                     )}
+                    {/* same performance issue as with starred movies */}
+                    {/* also, both of these are very similar. We could refactor this to avoid duplication */}
                     {!watchLater.watchLaterMovies.map(movie => movie.id).includes(movie.id) ? (
                         <button type="button" data-testid="watch-later" className="btn btn-light btn-watch-later" onClick={() => dispatch(addToWatchLater({
                                 id: movie.id, 
@@ -57,6 +63,7 @@ const Movie = ({ movie, viewTrailer, closeCard }) => {
                     )}
                     <button type="button" className="btn btn-dark" onClick={() => viewTrailer(movie)}>View Trailer</button>                                                
                 </div>
+                {/* hardcoded image URL. We could use a constant for this */}
                 <img className="center-block" src={(movie.poster_path) ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}` : placeholder} alt="Movie poster" />
             </div>
             <h6 className="title mobile-card">{movie.title}</h6>

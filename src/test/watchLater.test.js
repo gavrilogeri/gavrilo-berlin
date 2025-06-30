@@ -16,6 +16,8 @@ it('Watch Later movies page', async () => {
     })
     await userEvent.click(watchLaterLink)
 
+    // why is this commented-out?
+
     // const watchLaterink = screen.getByTestId('watch-later-div')
     // await waitFor(() => {
     //     expect(watchLaterink).toBeInTheDocument()
