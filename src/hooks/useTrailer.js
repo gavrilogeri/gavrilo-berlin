@@ -1,7 +1,8 @@
 import { useCallback, useState } from 'react';
 import { LoadingSpinner } from '../components/common/LoadingSpinner';
 import YouTubePlayer from '../components/YoutubePlayer';
-import { API_KEY, ENDPOINT } from '../constants';
+import { getMovieDetailsEndpoint } from '../utils/apiUtils';
+import { showTrailerError } from '../utils/confirmationUtils';
 import { useModal } from './useModal';
 
 const useTrailer = () => {
@@ -14,7 +15,7 @@ const useTrailer = () => {
     try {
       setIsLoadingTrailer(true);
       const response = await fetch(
-        `${ENDPOINT}/movie/${movieId}?api_key=${API_KEY}&append_to_response=videos`,
+        getMovieDetailsEndpoint(movieId),
         { signal: controller.signal }
       );
       
@@ -50,7 +51,7 @@ const useTrailer = () => {
       openModal(trailerKey);
     } else {
       closeModal();
-      alert('No trailer available for this movie');
+      showTrailerError();
     }
   }, [openModal, closeModal, getTrailerKey]);
 

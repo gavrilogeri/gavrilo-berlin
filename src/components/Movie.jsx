@@ -1,44 +1,11 @@
-import { useState, useMemo, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import starredSlice from "../data/starredSlice";
-import watchLaterSlice from "../data/watchLaterSlice";
-import { TMDB_IMAGE_BASE_URL } from "../constants";
-import placeholder from "../assets/not-found-500X750.jpeg";
+import { useState, useCallback } from "react";
+import useMovieActions from "../hooks/useMovieActions";
+import ActionButtons from "./common/ActionButtons";
+import { getMoviePosterUrl, getMovieReleaseYear, getMovieActionLabel } from "../utils/movieUtils";
 
 const Movie = ({ movie, viewTrailer }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const dispatch = useDispatch();
-
-  const starredMovies = useSelector((state) => state.starred.starredMovies);
-  const watchLaterMovies = useSelector(
-    (state) => state.watchLater.watchLaterMovies
-  );
-
-  // We'll memoize this to prevent unnecessary calculations
-  const isStarred = useMemo(
-    () => starredMovies.some((m) => m.id === movie.id),
-    [starredMovies, movie.id]
-  );
-
-  const isInWatchLater = useMemo(
-    () => watchLaterMovies.some((m) => m.id === movie.id),
-    [watchLaterMovies, movie.id]
-  );
-
-  const { starMovie, unstarMovie } = starredSlice.actions;
-  const { addToWatchLater, removeFromWatchLater } = watchLaterSlice.actions;
-
-  //   Memoized movie data
-  const movieData = useMemo(
-    () => ({
-      id: movie.id,
-      overview: movie.overview,
-      release_date: movie.release_date?.substring(0, 4),
-      poster_path: movie.poster_path,
-      title: movie.title,
-    }),
-    [movie]
-  );
+  const { isStarred, isInWatchLater, toggleStar, toggleWatchLater } = useMovieActions(movie);
 
   const handleCardClick = useCallback(() => {
     setIsExpanded(true);
@@ -49,37 +16,6 @@ const Movie = ({ movie, viewTrailer }) => {
     setIsExpanded(false);
   }, []);
 
-  const handleStarToggle = useCallback(
-    (e) => {
-      e.stopPropagation();
-      if (isStarred) {
-        dispatch(unstarMovie(movie));
-      } else {
-        dispatch(starMovie(movieData));
-      }
-    },
-    [dispatch, isStarred, movie, movieData, starMovie, unstarMovie]
-  );
-
-  const handleWatchLaterToggle = useCallback(
-    (e) => {
-      e.stopPropagation();
-      if (isInWatchLater) {
-        dispatch(removeFromWatchLater(movie));
-      } else {
-        dispatch(addToWatchLater(movieData));
-      }
-    },
-    [
-      dispatch,
-      isInWatchLater,
-      movie,
-      movieData,
-      addToWatchLater,
-      removeFromWatchLater,
-    ]
-  );
-
   const handleViewTrailer = useCallback(
     (e) => {
       e.stopPropagation();
@@ -88,11 +24,8 @@ const Movie = ({ movie, viewTrailer }) => {
     [viewTrailer, movie]
   );
 
-  const posterUrl = movie.poster_path
-    ? `${TMDB_IMAGE_BASE_URL}${movie.poster_path}`
-    : placeholder;
-
-  const releaseYear = movie.release_date?.substring(0, 4);
+  const posterUrl = getMoviePosterUrl(movie.poster_path);
+  const releaseYear = getMovieReleaseYear(movie.release_date);
 
   return (
     <div className="wrapper">
@@ -107,7 +40,7 @@ const Movie = ({ movie, viewTrailer }) => {
             handleCardClick();
           }
         }}
-        aria-label={`View details for ${movie.title}`}
+        aria-label={getMovieActionLabel('view', movie.title)}
       >
         <div className="card-body">
           <div className="overlay" />
@@ -131,53 +64,14 @@ const Movie = ({ movie, viewTrailer }) => {
                 </div>
               )}
 
-              <div className="action-buttons">
-                <button
-                  type="button"
-                  className="btn-star"
-                  onClick={handleStarToggle}
-                  data-testid={isStarred ? "unstar-link" : "starred-link"}
-                  aria-label={
-                    isStarred ? "Remove from starred" : "Add to starred"
-                  }
-                >
-                  <i
-                    className={`bi ${isStarred ? "bi-star-fill" : "bi-star"}`}
-                    data-testid={isStarred ? "star-fill" : "star-empty"}
-                  />
-                </button>
-
-                <button
-                  type="button"
-                  className={`btn-watch-later ${
-                    isInWatchLater ? "active" : ""
-                  }`}
-                  onClick={handleWatchLaterToggle}
-                  data-testid={
-                    isInWatchLater ? "remove-watch-later" : "watch-later"
-                  }
-                  aria-label={
-                    isInWatchLater
-                      ? "Remove from watch later"
-                      : "Add to watch later"
-                  }
-                >
-                  {isInWatchLater ? (
-                    <i className="bi bi-check" />
-                  ) : (
-                    "Watch Later"
-                  )}
-                </button>
-
-                <button
-                  type="button"
-                  className="btn-trailer"
-                  onClick={handleViewTrailer}
-                  aria-label={`View trailer for ${movie.title}`}
-                >
-                  View Trailer
-                </button>
-              </div>
+              <ActionButtons
+                movie={movie}
+                isStarred={isStarred}
+                isInWatchLater={isInWatchLater}
+                onToggleStar={toggleStar}
+                onToggleWatchLater={toggleWatchLater}
+                onViewTrailer={handleViewTrailer}
+              />
             </div>
           )}
 
@@ -197,7 +91,7 @@ const Movie = ({ movie, viewTrailer }) => {
             type="button"
             className="close"
             onClick={handleClose}
-            aria-label={`Close details for ${movie.title}`}
+            aria-label={getMovieActionLabel('close', movie.title)}
           >
             <span aria-hidden="true">&times;</span>
           </button>

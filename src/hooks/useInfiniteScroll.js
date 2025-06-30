@@ -1,21 +1,25 @@
-import { useState, useEffect, useCallback } from 'react';
-import { ENDPOINT_SEARCH, ENDPOINT_DISCOVER, API_KEY } from '../constants';
+import { useState, useEffect, useCallback, useRef } from 'react';
+import { getPopularMoviesEndpoint, getSearchMoviesEndpoint } from '../utils/apiUtils';
 
 const useInfiniteScroll = (searchQuery = '') => {
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  
+  // we;re using ref to avoid stale closure issues
+  const loadingRef = useRef(false);
+  loadingRef.current = loading;
 
   const loadMovies = useCallback(async (pageNum, isNewSearch = false) => {
-    if (loading) return;
+    if (loadingRef.current) return;
     
     setLoading(true);
     
     try {
       const endpoint = searchQuery.trim() 
-        ? `${ENDPOINT_SEARCH}&query=${encodeURIComponent(searchQuery)}&page=${pageNum}`
-        : `${ENDPOINT_DISCOVER}&page=${pageNum}`;
+        ? getSearchMoviesEndpoint(searchQuery, pageNum)
+        : getPopularMoviesEndpoint(pageNum);
       
       const response = await fetch(endpoint);
       const data = await response.json();
@@ -35,27 +39,23 @@ const useInfiniteScroll = (searchQuery = '') => {
     } finally {
       setLoading(false);
     }
-  }, [searchQuery, loading]);
+  }, [searchQuery]); 
 
   const loadMore = useCallback(() => {
-    if (!loading && hasMore) {
+    if (!loadingRef.current && hasMore) {
       loadMovies(page + 1);
     }
-  }, [loading, hasMore, page, loadMovies]);
+  }, [hasMore, page, loadMovies]);
 
-  const resetAndLoad = useCallback(() => {
+  // Auto-load on mount and search change
+  useEffect(() => {
     setMovies([]);
     setPage(1);
     setHasMore(true);
     loadMovies(1, true);
-  }, [loadMovies]);
+  }, [searchQuery, loadMovies]); 
 
-  // Auto-load on mount and search change
-  useEffect(() => {
-    resetAndLoad();
-  }, [searchQuery]);
-
-  // Simple scrol detection
+  // Simple scroll detection
   useEffect(() => {
     const handleScroll = () => {
       if (
