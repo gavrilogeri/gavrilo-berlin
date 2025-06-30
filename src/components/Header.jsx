@@ -77,6 +77,7 @@ const Header = ({ searchMovies }) => {
             </NavLink>
           </div>
           <NavLink to="/watch-later" className="nav-fav">
+            <i className="bi bi-clock" />
             watch later
           </NavLink>
         </nav>

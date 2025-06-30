@@ -14,6 +14,7 @@ header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 
     .logo {
       display: flex;
@@ -32,6 +33,7 @@ header {
         margin-left: $spacing-sm;
         text-decoration: none;
         letter-spacing: 1px;
+        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
       }
     }
 
@@ -75,9 +77,21 @@ header {
           font-size: 0.8rem;
           color: $text-secondary;          
           text-decoration: none;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+
+          i {
+            font-size: 1rem;
+            color: $text-secondary;
+          }
 
           &:hover {
             color: $text-primary;
+            
+            i {
+              color: $text-primary;
+            }
           }
         }
       }
@@ -160,11 +174,12 @@ header {
   font-size: 16px;
   width: 320px;
   transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 
   &:focus {
     outline: none;
     border-color: $border-primary;
-    box-shadow: 0 0 0 3px $shadow-primary;
+    box-shadow: 0 0 0 3px $shadow-primary, 0 6px 16px rgba(0, 0, 0, 0.15);
   }
 
   @media (max-width: 768px) {
